@@ -1,12 +1,25 @@
 import React from "react";
 import "./App.css";
 //import axios from "axios";
-//https://www.ifixit.com/api/2.0/categories/all
 
 class App extends React.Component {
   state = {
     search: "",
-    devices: []
+    devices: [],
+    bag: []
+  };
+
+  addDevice = (e, deviceTitle) => {
+    console.log(deviceTitle);
+    this.setState(prevState => ({
+      bag: [...prevState.bag, deviceTitle]
+    }));
+  };
+
+  removeDevice = (e, deviceTitle) => {
+    this.setState(prevState => ({
+      bag: prevState.bag.filter(d => d !== deviceTitle)
+    }));
   };
 
   onChange = e => {
@@ -34,18 +47,38 @@ class App extends React.Component {
 
   render() {
     return (
-      <form>
-        <input
-          type="text"
-          placeholder="Search for devices..."
-          onChange={this.onChange}
-        />
-        {this.state.devices.map(device => (
-          <ul key={device.title}>
-            <li>{device.title}</li>
-          </ul>
+      <div>
+        <form>
+          <input
+            type="text"
+            placeholder="Search for devices..."
+            onChange={this.onChange}
+          />
+          {this.state.devices.map(device => (
+            <ul key={device.title}>
+              <p>
+                {device.title}{" "}
+                <i
+                  className="fas fa-plus"
+                  style={{ cursor: "pointer", color: "green" }}
+                  onClick={e => this.addDevice(e, device.title)}
+                />
+              </p>
+            </ul>
+          ))}
+        </form>
+
+        {this.state.bag.map(device => (
+          <p key={device.title}>
+            {device}
+            <i
+              className="fas fa-times"
+              style={{ cursor: "pointer", color: "red" }}
+              onClick={e => this.removeDevice(e, device)}
+            />
+          </p>
         ))}
-      </form>
+      </div>
     );
   }
 }

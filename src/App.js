@@ -1,6 +1,5 @@
 import React from "react";
-import "./App.css";
-//import axios from "axios";
+//import "./styles/styles.scss";
 
 class App extends React.Component {
   state = {
@@ -10,16 +9,30 @@ class App extends React.Component {
   };
 
   addDevice = (e, deviceTitle) => {
-    console.log(deviceTitle);
-    this.setState(prevState => ({
-      bag: [...prevState.bag, deviceTitle]
-    }));
+    const array = Array.from(this.state.bag);
+    if (array.indexOf(deviceTitle) === -1) {
+      array.push(deviceTitle);
+    } else {
+      return;
+    }
+    this.setState(
+      /*prevState =>*/ {
+        bag: array
+        //bag: [...prevState.bag, deviceTitle]
+      }
+    );
   };
 
   removeDevice = (e, deviceTitle) => {
     this.setState(prevState => ({
       bag: prevState.bag.filter(d => d !== deviceTitle)
     }));
+  };
+
+  removeAll = e => {
+    this.setState({
+      bag: []
+    });
   };
 
   onChange = e => {
@@ -67,7 +80,6 @@ class App extends React.Component {
             </ul>
           ))}
         </form>
-
         {this.state.bag.map(device => (
           <p key={device.title}>
             {device}
@@ -78,6 +90,7 @@ class App extends React.Component {
             />
           </p>
         ))}
+        <button onClick={e => this.removeAll(e)}>Remove all</button>
       </div>
     );
   }

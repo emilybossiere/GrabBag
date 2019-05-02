@@ -1,9 +1,9 @@
 import React from "react";
+import Search from "./components/Search";
 import "./styles/styles.scss";
 
 class App extends React.Component {
   state = {
-    search: "",
     devices: [],
     bag: []
   };
@@ -41,54 +41,16 @@ class App extends React.Component {
     localStorage.setItem("list", JSON.stringify(clearedArray));
   };
 
-  onChange = e => {
-    const { value } = e.target;
-    this.setState({
-      search: value
-    });
-
-    this.search(value);
-  };
-
-  search = search => {
-    const url = `https://www.ifixit.com/api/2.0/suggest/${search}?doctypes=device`;
-
-    fetch(url)
-      .then(results => results.json())
-      .then(data => {
-        this.setState({ devices: data.results });
-      });
-  };
-
   componentDidMount() {
-    this.search("");
     const storedList = JSON.parse(localStorage.getItem("list"));
-    console.log(storedList);
     const bag = storedList;
     this.setState({ bag });
   }
   render() {
     return (
       <div>
-        <form>
-          <input
-            type="text"
-            placeholder="Search for devices..."
-            onChange={this.onChange}
-          />
-          {this.state.devices.map(device => (
-            <ul key={device.title}>
-              <p>
-                {device.title}{" "}
-                <i
-                  className="fas fa-plus"
-                  style={{ cursor: "pointer", color: "green" }}
-                  onClick={e => this.addDevice(e, device.title)}
-                />
-              </p>
-            </ul>
-          ))}
-        </form>
+        <Search addDevice={this.addDevice} />
+
         {this.state.bag.map(device => (
           <p key={device.title}>
             {device}

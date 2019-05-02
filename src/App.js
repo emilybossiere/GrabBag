@@ -1,5 +1,5 @@
 import React from "react";
-//import "./styles/styles.scss";
+import "./styles/styles.scss";
 
 class App extends React.Component {
   state = {
@@ -15,24 +15,30 @@ class App extends React.Component {
     } else {
       return;
     }
-    this.setState(
-      /*prevState =>*/ {
-        bag: array
-        //bag: [...prevState.bag, deviceTitle]
-      }
-    );
+    localStorage.setItem("list", JSON.stringify(array));
+    this.setState({
+      bag: array
+    });
   };
 
   removeDevice = (e, deviceTitle) => {
     this.setState(prevState => ({
       bag: prevState.bag.filter(d => d !== deviceTitle)
     }));
+
+    let removedDeviceArray = JSON.parse(localStorage.getItem("list"));
+    removedDeviceArray.splice(removedDeviceArray.indexOf(deviceTitle), 1);
+    localStorage.setItem("list", JSON.stringify(removedDeviceArray));
   };
 
   removeAll = e => {
     this.setState({
       bag: []
     });
+
+    let clearedArray = JSON.parse(localStorage.getItem("list"));
+    clearedArray = [];
+    localStorage.setItem("list", JSON.stringify(clearedArray));
   };
 
   onChange = e => {
@@ -56,8 +62,11 @@ class App extends React.Component {
 
   componentDidMount() {
     this.search("");
+    const storedList = JSON.parse(localStorage.getItem("list"));
+    console.log(storedList);
+    const bag = storedList;
+    this.setState({ bag });
   }
-
   render() {
     return (
       <div>

@@ -1,5 +1,6 @@
 import React from "react";
 import Search from "./components/Search";
+import Menu from "./components/Menu";
 import "./styles/styles.scss";
 
 class App extends React.Component {
@@ -50,7 +51,6 @@ class App extends React.Component {
     return (
       <div>
         <Search addDevice={this.addDevice} />
-
         {this.state.bag.map(device => (
           <p key={device.title}>
             {device}
@@ -62,6 +62,7 @@ class App extends React.Component {
           </p>
         ))}
         <button onClick={e => this.removeAll(e)}>Remove all</button>
+        <Menu />
       </div>
     );
   }

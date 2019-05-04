@@ -1,6 +1,5 @@
 import React from "react";
-import Search from "./components/Search";
-import Menu from "./components/Menu";
+//import Menu from "./components/Menu";
 import "./styles/styles.scss";
 
 class App extends React.Component {
@@ -9,8 +8,26 @@ class App extends React.Component {
     bag: []
   };
 
+  onChange = e => {
+    const { value } = e.target;
+    this.setState({
+      search: value
+    });
+
+    this.search(value);
+  };
+
+  search = search => {
+    const url = `https://www.ifixit.com/api/2.0/suggest/${search}?doctypes=device`;
+    fetch(url)
+      .then(results => results.json())
+      .then(data => {
+        this.setState({ devices: data.results });
+      });
+  };
+
   addDevice = (e, deviceTitle) => {
-    const array = Array.from(this.state.bag);
+    const array = Array.from(this.state.bag || []);
     if (array.indexOf(deviceTitle) === -1) {
       array.push(deviceTitle);
     } else {
@@ -43,15 +60,47 @@ class App extends React.Component {
   };
 
   componentDidMount() {
+    this.search("");
     const storedList = JSON.parse(localStorage.getItem("list"));
     const bag = storedList;
     this.setState({ bag });
   }
   render() {
     return (
-      <div>
-        <Search addDevice={this.addDevice} />
-        {this.state.bag.map(device => (
+      <div className="text">
+        <header className="header">
+          <img
+            className="header-img"
+            align="left"
+            src={"ifixit-logo.png"}
+            alt="Logo"
+          />
+          GRAB BAG
+        </header>
+        <h3>Search For A Device</h3>
+
+        <form>
+          <input
+            className="mb-5 rounded search"
+            type="text"
+            placeholder="Search..."
+            onChange={this.onChange}
+          />
+
+          {(this.state.devices || []).map(device => (
+            <ul key={device.title}>
+              <p>
+                {device.title}{" "}
+                <i
+                  className="fas fa-plus"
+                  style={{ cursor: "pointer", color: "green" }}
+                  onClick={e => this.addDevice(e, device.title)}
+                />
+              </p>
+            </ul>
+          ))}
+        </form>
+        {(this.state.bag || []).map(device => (
           <p key={device.title}>
             {device}
             <i
@@ -61,8 +110,10 @@ class App extends React.Component {
             />
           </p>
         ))}
-        <button onClick={e => this.removeAll(e)}>Remove all</button>
-        <Menu />
+        <button className="btn button" onClick={e => this.removeAll(e)}>
+         Remove all
+        </button>
+        {/*<Menu />*/}
       </div>
     );
   }

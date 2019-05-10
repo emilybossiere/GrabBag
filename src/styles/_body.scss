@@ -12,6 +12,7 @@ body {
   font-weight: 350;
   font-size: 13px;
   letter-spacing: 0.5px;
+  margin: 3px;
 }
 
 .button:hover {
@@ -31,4 +32,55 @@ button:focus {
   -moz-transition: none;
   -webkit-transition: none;
   outline: none;
+}
+
+.search:hover {
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.075);
+}
+
+.search-results {
+  //background-color: #aeaeae;
+  //border-radius: 5px;
+}
+
+.flex-container {
+  display: flex;
+  height: auto;
+  justify-content: space-between;
+  overflow: hidden;
+  margin: 15px;
+  padding: 5px;
+}
+
+.flex-container p {
+  text-align: right;
+}
+
+li {
+  list-style-type: none;
+  list-style-position: inside;
+  border-bottom: 1px dotted grey;
+  padding: 0.5rem;
+}
+
+p {
+  border-bottom: 1px dotted grey;
+  padding: 0.1rem;
+}
+
+.flex-container span {
+  margin: 50px;
+  padding: 5px;
+}
+
+.flex-container div {
+  margin: 5px;
+}
+
+.ex {
+  padding: 5px;
+}
+
+.plus {
+  padding: 5px;
 }

@@ -77,42 +77,57 @@ class App extends React.Component {
           />
           GRAB BAG
         </header>
-        <h3>Search For A Device</h3>
+        <div className="flex-container">
+          <h3>Search for a device</h3>
+          <h3>
+            <span>Your Bag</span>
+            <button className="btn button" onClick={e => this.removeAll(e)}>
+              Remove all
+            </button>
+          </h3>
+        </div>
 
-        <form>
-          <input
-            className="mb-5 rounded search"
-            type="text"
-            placeholder="Search..."
-            onChange={this.onChange}
-          />
-
-          {(this.state.devices || []).map(device => (
-            <ul key={device.title}>
-              <p>
-                {device.title}{" "}
-                <i
-                  className="fas fa-plus"
-                  style={{ cursor: "pointer", color: "green" }}
-                  onClick={e => this.addDevice(e, device.title)}
-                />
-              </p>
-            </ul>
-          ))}
-        </form>
-        {(this.state.bag || []).map(device => (
-          <p key={device.title}>
-            {device}
-            <i
-              className="fas fa-times"
-              style={{ cursor: "pointer", color: "red" }}
-              onClick={e => this.removeDevice(e, device)}
+        <div className="flex-container">
+          <form>
+            <input
+              className="rounded search"
+              type="text"
+              placeholder="Search..."
+              onChange={this.onChange}
             />
-          </p>
-        ))}
-        <button className="btn button" onClick={e => this.removeAll(e)}>
-         Remove all
-        </button>
+            <div className="search-results">
+              {(this.state.devices || []).map(device => (
+                // eslint-disable-next-line
+                <a key={device.title}>
+                  <li>
+                    {device.title}{" "}
+                    <i
+                      className="fas fa-plus plus input"
+                      style={{ cursor: "pointer", color: "green" }}
+                      onClick={e => this.addDevice(e, device.title)}
+                    />
+                  </li>
+                </a>
+              ))}
+            </div>
+          </form>
+
+          <div>
+            <div>
+              {(this.state.bag || []).map(device => (
+                <p key={device.title}>
+                  {device}
+                  <i
+                    className="fas fa-times ex"
+                    style={{ cursor: "pointer", color: "red" }}
+                    onClick={e => this.removeDevice(e, device)}
+                  />
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/*<Menu />*/}
       </div>
     );

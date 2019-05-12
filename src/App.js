@@ -1,11 +1,13 @@
 import React from "react";
-//import Menu from "./components/Menu";
+import Menu from "./components/Menu";
 import "./styles/styles.scss";
 
 class App extends React.Component {
   state = {
     devices: [],
-    bag: []
+    bag: [],
+    objectKeys: null,
+    tempKeys: []
   };
 
   onChange = e => {
@@ -110,8 +112,9 @@ class App extends React.Component {
                 </a>
               ))}
             </div>
+            <Menu addDevice={this.addDevice}/>
           </form>
-
+                
           <div>
             <div>
               {(this.state.bag || []).map(device => (

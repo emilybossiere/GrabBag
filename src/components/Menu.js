@@ -1,68 +1,90 @@
 import React from "react";
 import axios from "axios";
+//import FontAwesome from "react-fontawesome";
 
-//import "../assets/css/menu.css";
-
-//IMPORT JS
-import { createData } from "./createData.js";
-
-class Menu extends React.Component {
+class MenuTest extends React.Component {
   state = {
-    collapsed: false,
     categories: [],
-    list: "",
-    categoriesKeys: ""
+    objectKeys: null,
+    tempKeys: []
   };
 
-  test = data => {
-    console.log("teeeest", data);
-  };
+  makeMenuLayer = layer => {
+    const { objectKeys } = this.state;
+    const layerKeys = Object.entries(layer).map(([key, value]) => {
+      var arrow = Object.keys(value).length ? (
+        <i
+            className="fas fa-angle-right"
+            style={{ cursor: "pointer", color: "gray" }}
+          />
+      ) : (
+        ""
+      );
+      var ex =
+        Object.keys(value).length === 0 ? (
+          <i
+            className="fas fa-plus"
+            style={{ cursor: "pointer", color: "green" }}
+          />
+        ) : (
+          ""
+        );
+      return (
+        <ul key={key}>
+          <div onClick={() => this.handleShowMore(key)}>
+            {key} {arrow} {ex}
+          </div>
 
-  //handle displaying list of values when clicking on button
-  //search for list of values within object
-  handleSearch = (obj, next, event) => {
-    // console.log(event.target.name);
-    Object.keys(obj).forEach(key => {
-      if (typeof obj[key] === "object") {
-        if (next === key) {
-          //create DOM  CHILDREN
-          createData(Object.keys(obj[key]), key, this.test, event);
-        }
-        this.handleSearch(obj[key], next);
-      }
+          {objectKeys[key] && this.makeMenuLayer(value)}
+        </ul>
+      );
     });
+    return <div>{layerKeys}</div>;
+  };
+
+  handleShowMore = key => {
+    this.setState(prevState => ({
+      objectKeys: {
+        ...prevState.objectKeys,
+        [key]: !this.state.objectKeys[key]
+      }
+    }));
+  };
+
+  initializeTempKeys = layer => {
+    // eslint-disable-next-line
+    Object.entries(layer).map(([key, value]) => {
+      const newTempKeys = this.state.tempKeys;
+      newTempKeys.push(key);
+      this.setState({ tempKeys: newTempKeys });
+      this.initializeTempKeys(value);
+    });
+  };
+
+  initializeObjectKeys = () => {
+    const { tempKeys } = this.state;
+    let tempObject = {};
+    tempKeys.forEach(tempKey => {
+      tempObject[tempKey] = true;
+    });
+
+    this.setState({ objectKeys: tempObject });
   };
 
   componentDidMount() {
     axios.get("https://www.ifixit.com/api/2.0/categories").then(response => {
       this.setState({ categories: response.data });
     });
+    const { categories } = this.state;
+    this.initializeTempKeys(categories);
+    this.initializeObjectKeys();
+    this.setState({ categories });
   }
 
   render() {
-    return (
-      <React.Fragment>
-        {/* display list of things */}
-        <div id="high" className="columns is-multiline">
-          {Object.keys(this.state.categories).map(key => (
-            <div className="column is-4">
-              <div
-                name="col"
-                className="block1"
-                onClick={event =>
-                  this.handleSearch(this.state.categories, key, event)
-                }
-              >
-                {key}
-              </div>
-              <div name={key + "1"} />
-            </div>
-          ))}
-        </div>
-        {/* <div>{iterate(categories)}</div> */}
-      </React.Fragment>
-    );
+    const { categories } = this.state;
+    return <div>{this.makeMenuLayer(categories)}</div>;
   }
 }
 
-export default Menu;
+export default MenuTest;

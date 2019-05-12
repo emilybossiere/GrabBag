@@ -179,7 +179,7 @@ class App extends React.Component {
 
           {/* bag and remove all button */}
           <h3 className="your-bag">
-            <span>Your Bag</span>
+            <span className="bag-title">Your Bag</span>
             <button className="btn button" onClick={e => this.removeAll(e)}>
               Remove all
             </button>
@@ -210,7 +210,7 @@ class App extends React.Component {
                 </a>
               ))}
               {/* create menu using categories */}
-              <h4>Or browse for a device...</h4>
+              <h4>Or browse from the menu...</h4>
               <div className="menu">
                 {this.makeMenuLayer(this.state.categories)}
               </div>

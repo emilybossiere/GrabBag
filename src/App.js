@@ -1,5 +1,5 @@
 import React from "react";
-import Menu from "./components/Menu";
+import axios from "axios";
 import "./styles/styles.scss";
 
 class App extends React.Component {
@@ -41,6 +41,7 @@ class App extends React.Component {
     });
   };
 
+
   removeDevice = (e, deviceTitle) => {
     this.setState(prevState => ({
       bag: prevState.bag.filter(d => d !== deviceTitle)
@@ -61,11 +62,88 @@ class App extends React.Component {
     localStorage.setItem("list", JSON.stringify(clearedArray));
   };
 
+  makeMenuLayer = layer => {
+    const { objectKeys } = this.state;
+    if (layer == null) {
+      return null;
+    }
+    const layerKeys = Object.entries(layer).map(([key, value]) => {
+      var arrow = Object.keys(value).length ? (
+        <i
+          className="fas fa-angle-right"
+          style={{ cursor: "pointer", color: "gray" }}
+        />
+      ) : (
+        ""
+      );
+      var plus =
+        Object.keys(value).length === 0 ? (
+          <i
+            className="fas fa-plus"
+            style={{ cursor: "pointer", color: "green" }}
+            onClick={e => this.addDevice(e, key)}
+          />
+        ) : (
+          ""
+        );
+      return (
+        <ul key={key}>
+          <div onClick={() => this.handleShowMore(key)}>
+            {key} {arrow} {plus}
+          </div>
+
+          {objectKeys[key] && this.makeMenuLayer(value)}
+        </ul>
+      );
+    });
+    return <div>{layerKeys}</div>;
+  };
+
+  handleShowMore = key => {
+    this.setState(prevState => ({
+      objectKeys: {
+        ...prevState.objectKeys,
+        [key]: !this.state.objectKeys[key]
+      }
+    }));
+  };
+
+  initializeTempKeys = layer => {
+    if (layer == null) {
+      return null;
+    }
+    // eslint-disable-next-line
+    Object.entries(layer).map(([key, value]) => {
+      const newTempKeys = this.state.tempKeys;
+      newTempKeys.push(key);
+      this.setState({ tempKeys: newTempKeys });
+      this.initializeTempKeys(value);
+    });
+  };
+
+  initializeObjectKeys = () => {
+    const { tempKeys } = this.state;
+    let tempObject = {};
+    tempKeys.forEach(tempKey => {
+      tempObject[tempKey] = true;
+    });
+
+    this.setState({ objectKeys: tempObject });
+  };
+
   componentDidMount() {
     this.search("");
     const storedList = JSON.parse(localStorage.getItem("list"));
     const bag = storedList;
     this.setState({ bag });
+
+    axios.get("https://www.ifixit.com/api/2.0/categories").then(response => {
+      this.setState({ categories: response.data });
+    });
+    const { categories } = this.state;
+    this.initializeTempKeys(categories);
+    this.initializeObjectKeys();
+    this.setState({ categories });
   }
   render() {
     return (
@@ -80,7 +158,7 @@ class App extends React.Component {
           GRAB BAG
         </header>
         <div className="flex-container">
-          <h3>Search for a device</h3>
+          <h3>Search for a device...</h3>
           <h3>
             <span>Your Bag</span>
             <button className="btn button" onClick={e => this.removeAll(e)}>
@@ -112,13 +190,14 @@ class App extends React.Component {
                 </a>
               ))}
             </div>
-            <Menu addDevice={this.addDevice}/>
+            <h3>Or browse for a device below...</h3>
+            {this.makeMenuLayer(this.state.categories)}
           </form>
-                
+
           <div>
             <div>
               {(this.state.bag || []).map(device => (
-                <p key={device.title}>
+                <p key={device}>
                   {device}
                   <i
                     className="fas fa-times ex"

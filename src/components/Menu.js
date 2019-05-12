@@ -14,9 +14,9 @@ class MenuTest extends React.Component {
     const layerKeys = Object.entries(layer).map(([key, value]) => {
       var arrow = Object.keys(value).length ? (
         <i
-            className="fas fa-angle-right"
-            style={{ cursor: "pointer", color: "gray" }}
-          />
+          className="fas fa-angle-right"
+          style={{ cursor: "pointer", color: "gray" }}
+        />
       ) : (
         ""
       );
@@ -25,6 +25,7 @@ class MenuTest extends React.Component {
           <i
             className="fas fa-plus"
             style={{ cursor: "pointer", color: "green" }}
+            onClick={() => console.log("test")}
           />
         ) : (
           ""
@@ -83,7 +84,7 @@ class MenuTest extends React.Component {
 
   render() {
     const { categories } = this.state;
-    return <div>{this.makeMenuLayer(categories)}</div>;
+    return <div className="menu">{this.makeMenuLayer(categories)}</div>;
   }
 }
 

@@ -170,7 +170,7 @@ class App extends React.Component {
             src={"ifixit-logo.png"}
             alt="Logo"
           />
-          <h>GRAB BAG</h>
+          GRAB BAG
         </header>
 
         {/* div for search bar, menu, and bag */}

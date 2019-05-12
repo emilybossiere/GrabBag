@@ -1,0 +1,40 @@
+.bag {
+  border: solid #eaeaea;
+  border-radius: 5px;
+  width: 340px;
+}
+
+.button {
+  background-color: #0066c7;
+  color: white;
+  font-weight: 350;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  margin: 3px;
+}
+
+.button:hover {
+  background-color: #005eb7;
+  color: white;
+}
+
+button:focus {
+  outline: none !important;
+}
+
+.ex {
+  padding: 5px;
+  color: red;
+}
+
+.ex:hover {
+  color: #af1a1a;
+}
+
+li {
+  list-style-type: none;
+  list-style-position: inside;
+  border-bottom: 1px dotted grey;
+  padding: 0.5rem;
+  text-align: left;
+}

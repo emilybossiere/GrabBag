@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/GrabBag/static/css/main.82e74435.chunk.css",
+    "main.js": "/GrabBag/static/js/main.65d2b559.chunk.js",
+    "main.js.map": "/GrabBag/static/js/main.65d2b559.chunk.js.map",
+    "runtime~main.js": "/GrabBag/static/js/runtime~main.f4fac140.js",
+    "runtime~main.js.map": "/GrabBag/static/js/runtime~main.f4fac140.js.map",
+    "static/css/2.22a7d4ef.chunk.css": "/GrabBag/static/css/2.22a7d4ef.chunk.css",
+    "static/js/2.578f8cdc.chunk.js": "/GrabBag/static/js/2.578f8cdc.chunk.js",
+    "static/js/2.578f8cdc.chunk.js.map": "/GrabBag/static/js/2.578f8cdc.chunk.js.map",
+    "index.html": "/GrabBag/index.html",
+    "precache-manifest.0ff67860f532018bd7d7f1bef2d1a671.js": "/GrabBag/precache-manifest.0ff67860f532018bd7d7f1bef2d1a671.js",
+    "service-worker.js": "/GrabBag/service-worker.js",
+    "static/css/2.22a7d4ef.chunk.css.map": "/GrabBag/static/css/2.22a7d4ef.chunk.css.map",
+    "static/css/main.82e74435.chunk.css.map": "/GrabBag/static/css/main.82e74435.chunk.css.map"
+  }
+}
